@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DA2 - Dados Vampiro</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>DADOS VAMPIRO</h1>
+    </header>
+    <div class="container">
+        <div id="results"></div>
+        <div id="selector">
+            <div class="dice-input">
+                <label for="d4">D4:</label>
+                <input type="number" id="d4" min="0" max="25" value="0">
+            </div>
+            <div class="dice-input">
+                <label for="d6">D6:</label>
+                <input type="number" id="d6" min="0" max="25" value="0">
+            </div>
+            <div class="dice-input">
+                <label for="d8">D8:</label>
+                <input type="number" id="d8" min="0" max="25" value="0">
+            </div>
+            <div class="dice-input">
+                <label for="d10">D10:</label>
+                <input type="number" id="d10" min="0" max="25" value="0">
+            </div>
+            <div class="dice-input">
+                <label for="d12">D12:</label>
+                <input type="number" id="d12" min="0" max="25" value="0">
+            </div>
+            <div class="dice-input">
+                <label for="d20">D20:</label>
+                <input type="number" id="d20" min="0" max="25" value="0">
+            </div>
+            <div class="dice-input">
+                <label for="d100">D100:</label>
+                <input type="number" id="d100" min="0" max="25" value="0">
+            </div>
+            <button onclick="tirarDados()">TIRAR</button>
+            <button onclick="limpiarDados()">LIMPIAR</button>
+        </div>
+    </div>
+
+    <script>
+        function tirarDados() {
+            const diceTypes = [4, 6, 8, 10, 12, 20, 100];
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            diceTypes.forEach(sides => {
+                const count = parseInt(document.getElementById(`d${sides}`).value) || 0;
+                if (count > 0) {
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'results-group';
+
+                    const label = document.createElement('div');
+                    label.className = 'dice-type-label';
+                    label.textContent = `D${sides}`;
+                    groupDiv.appendChild(label);
+
+                    for (let i = 0; i < count; i++) {
+                        const roll = Math.floor(Math.random() * sides) + 1;
+                        const diceElement = document.createElement('div');
+                        diceElement.className = 'dice';
+                        diceElement.innerHTML = `
+                            <div class="dice-face">
+                                <span class="dice-number">?</span>
+                            </div>
+                        `;
+                        groupDiv.appendChild(diceElement);
+
+                        diceElement.classList.add('roll');
+                        setTimeout(() => {
+                            diceElement.querySelector('.dice-number').textContent = roll;
+                            diceElement.classList.remove('roll');
+                        }, 600);
+                    }
+
+                    resultsDiv.appendChild(groupDiv);
+                }
+            });
+        }
+
+        function limpiarDados() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('d4').value = '0';
+            document.getElementById('d6').value = '0';
+            document.getElementById('d8').value = '0';
+            document.getElementById('d10').value = '0';
+            document.getElementById('d12').value = '0';
+            document.getElementById('d20').value = '0';
+            document.getElementById('d100').value = '0';
+        }
+    </script>
+</body>
+</html>
